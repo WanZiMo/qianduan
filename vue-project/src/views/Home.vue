@@ -1,6 +1,9 @@
 <template>
   <div>
-    helloworld
+    <div style="background-color:red">
+      helloworld
+    </div>
+    
   </div>
 </template>
 <script setup >
