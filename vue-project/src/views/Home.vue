@@ -25,11 +25,15 @@
     <div>
       <el-button>Defalt</el-button>
     </div>
+    <div>
+      <el-button type="danger" :icon="Delete" circle />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import {onMounted, reactive} from 'vue';
 import {ref} from 'vue';
+import {Delete} from '@element-plus/icons-vue';
 
 
 const data= reactive({

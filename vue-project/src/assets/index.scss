@@ -1,8 +1,9 @@
+@use "sass:color";
 @forward "element-plus/theme-chalk/src/common/var.scss" with($colors: (
     "primary":("base":#0066bc),
     "success":("base":#009900),
     "warning":("base":#ff9900),
-    "danger":("base":#cc0000)
+    "danger":("base":#cc0000),
     "info":("base":#0066bc)
   )
 );
