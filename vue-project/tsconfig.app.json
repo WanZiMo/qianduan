@@ -8,6 +8,7 @@
     "strict": false,  
     "jsx": "preserve",  
     "jsxImportSource": "vue" ,
+    "types": ["element-plus/global"], // element plus 类型提示
     "paths": {
       "@/*": ["./src/*"]
     }
