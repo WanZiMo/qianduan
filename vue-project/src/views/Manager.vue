@@ -1,7 +1,15 @@
 <template>
 <!---头部-->
-<div style="height: 50px; background-color: #73c9e8;">
-
+<div style="height: 50px; background-color: #73c9e8;display: flex;align-items: center;">
+    <div style="width: 200px;display: flex;align-items: center;">
+        <img style="width: 40px;" src="../assets/logo.png" alt="">
+        <span style="font-size: 20px;color: white; padding-left: 10px;">后台管理系统</span>
+    </div>
+    <div style="flex: 1;"></div>
+    <div style="width: fit-content;display: flex;align-items: center; padding-right: 10px;">
+        <img :src="state.circleUrl" alt="" style="width: 40px;height: 40px;">
+        <span style="color: white; margin-left: 5px;" >hello</span>
+    </div>
 </div>
 
 <!---主体-->
@@ -21,7 +29,15 @@
                 <el-menu-item >管理员信息</el-menu-item>
                 <el-menu-item >用户信息</el-menu-item>
             </el-sub-menu>
-            <el-menu-item index="/manager/data" >数据统计</el-menu-item>
+            <el-menu-item index="/manager/data" ><el-icon><DataAnalysis/></el-icon>数据统计</el-menu-item>
+            <el-menu-item index="/manager/home">
+                <el-icon><UserFilled/></el-icon>
+                个人信息
+            </el-menu-item>
+            <el-menu-item index="/manager/home">
+                <el-icon><SwitchButton/></el-icon>
+                退出登录
+            </el-menu-item>
         </el-menu> 
     </div>
     <!--左侧菜单结束-->
@@ -37,6 +53,21 @@
 
 <script setup lang="ts">
 import router from '@/router';
-import { House } from '@element-plus/icons-vue';
+import { House, SwitchButton, UserFilled } from '@element-plus/icons-vue';
+import { User } from '@element-plus/icons-vue';
+import { reactive } from 'vue';
+
+
+const state = reactive({
+    circleUrl:
+    'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+})
 
 </script>
+<style scoped>
+/* 菜单选中高亮 */
+.el-menu .is-active{
+    background-color: #ecf5ff;
+
+}
+</style>
