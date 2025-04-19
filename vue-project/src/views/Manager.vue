@@ -27,10 +27,10 @@
                     <span >用户管理</span>
                 </template>
                 <el-menu-item >管理员信息</el-menu-item>
-                <el-menu-item >用户信息</el-menu-item>
+                <el-menu-item index="/manager/employee">员工信息</el-menu-item>
             </el-sub-menu>
             <el-menu-item index="/manager/data" ><el-icon><DataAnalysis/></el-icon>数据统计</el-menu-item>
-            <el-menu-item index="/manager/home">
+            <el-menu-item index="/manager/person">
                 <el-icon><UserFilled/></el-icon>
                 个人信息
             </el-menu-item>
