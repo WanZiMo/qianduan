@@ -6,7 +6,7 @@
     </div>
   <div class="card" style="margin-bottom: 5px;">
       <el-button type="primary" @click="handleAdd">新增</el-button>
-      <el-button type="warning">批量删除</el-button>
+      <el-button type="danger" @click="delBatch">批量删除</el-button>
       <el-button type="info">导入</el-button>
       <el-button type="success">导出</el-button>
       
@@ -184,6 +184,23 @@ import { ElMessage, ElMessageBox } from 'element-plus';
     
     data.ids = rows.map(row => row.id)
     console.log(data.ids);
+  }
+  const delBatch = () => {
+    if (data.ids.length === 0) {
+      ElMessage.warning('请选择要删除的行');
+      return;
+    }
+    ElMessageBox.confirm('确定删除选中的行吗？', '提示', {type: 'warning'}).then(() => {
+      request.delete('/employee/deleteBatch',{data:data.ids}).then(res=>{
+      if((res as any).code ==='200'){
+        ElMessage.success('删除成功');
+        list();  // 删除成功后重新加载列表
+      }else{
+        ElMessage.error('删除失败');
+      }
+    })
+    }).catch
+    
   }
 
   list()
