@@ -13,13 +13,20 @@
   </div>
   <!-- 表格 name sex no工号 age description department_id-->
   <div class="card" style="margin-bottom: 5px;">
-    <el-table :data="data.tableData" stripe>
-      <el-table-column  label="名称" prop="name"></el-table-column>
+    <el-table :data="data.tableData" stripe  @selection-change="handleSelectionChange">
+      <el-table-column  label="选择" type="selection"></el-table-column>
+      <el-table-column  label="名称" prop="name" ></el-table-column>
       <el-table-column  label="性别" prop="sex"></el-table-column>
       <el-table-column  label="工号" prop="no"></el-table-column>
       <el-table-column  label="年龄" prop="age"></el-table-column>
       <el-table-column  label="个人介绍" prop="description" show-overflow-tooltip></el-table-column>
       <el-table-column  label="部门" prop="departmentName"></el-table-column>
+      <el-table-column  label="操作" width="150">
+        <template #default="scope">
+          <el-button type="primary" :icon="Edit" link @click="handleUpdate(scope.row)" >编辑</el-button>
+          <el-button type="danger" :icon="Delete" link @click="del(scope.row.id)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 分页 -->
   <div style="margin-top: 10px;">
@@ -68,11 +75,12 @@
   
 </template>
 <script setup lang="ts">
-import { Search } from '@element-plus/icons-vue';
+import { Delete, Edit, Search } from '@element-plus/icons-vue';
 
 import { reactive } from 'vue';
 import request from '@/utils/request';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
+
 
   const data = reactive({
     name: null,
@@ -82,11 +90,13 @@ import { ElMessage } from 'element-plus';
     total: 1,
     formVisible: false,
     form:{
+      id: null,
       name: null,
       sex: null,
       age: null,
       description: null,
-    }
+    },
+    ids:[]
   })
   const list = () => {
     request.get('/employee/selectPage',{
@@ -109,14 +119,29 @@ import { ElMessage } from 'element-plus';
   const handleAdd = () => {
     data.formVisible = true; 
     data.form = {  
-    name: '',  
-    sex: '男',  // 给默认值，而不是null  
-    age: 18,    // 给默认值，而不是null  
-    description: ''  
+      id: null,  // 给默认值，而不是null
+      name: '',  
+      sex: '男',  // 给默认值，而不是null  
+      age: 18,    // 给默认值，而不是null  
+      description: ''  
   };  
   }
+  
 
   const save = () => {
+    data.form.id ? update() : add();
+  }
+
+  const handleUpdate = (row: any) => {
+    data.formVisible = true;
+    data.form = JSON.parse(JSON.stringify(row));
+  }
+  // 删除
+  const handleDelete = (row: any) => {
+    
+  }
+
+  const add= () => {
     request.post('/employee/insertEmployee',data.form).then(res=>{
       if((res as any).code ==='200'){
         data.formVisible = false;
@@ -127,6 +152,39 @@ import { ElMessage } from 'element-plus';
       }
     })
   }
-  
+  const update = () => {
+    request.put('/employee/updateEmployee',data.form).then(res=>{//编辑对象包含id
+      if((res as any).code ==='200'){
+        data.formVisible = false;
+        ElMessage.success('保存成功');
+        list();
+      }else{
+        ElMessage.error('保存失败'); 
+      }
+    })
+    
+  }
+
+  const del = (id) => {
+    ElMessageBox.confirm('确定删除该员工信息吗？', '提示', {type: 'warning'}).then(() => {
+      request.delete('/employee/deleteEmployee/'+ id).then(res=>{
+      if((res as any).code ==='200'){
+        ElMessage.success('删除成功');
+        list();  // 删除成功后重新加载列表
+      }else{
+        ElMessage.error('删除失败');
+      }
+    }) 
+    }).catch()
+
+    
+  }
+    
+  const handleSelectionChange = (rows) => {//获取选中的行
+    
+    data.ids = rows.map(row => row.id)
+    console.log(data.ids);
+  }
+
   list()
 </script>
